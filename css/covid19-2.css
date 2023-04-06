@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pridi:wght@300;400;500;600;700&display=swap');
+:root{
+    --nav-font-primary : #16967F;
+    --nav-font-secondary : #797D7D;
+    --nav-bg-color : #fff;
+    --bg-container-primary : #30A48F;
+    --card-banner-color : #D9D9D9;
+    --font-primary : rgb(0, 0, 0);
+    --custom-card-time : #174348;
+}
+body{
+    margin: 0;
+    font-family: 'Poppins', 'Pridi';
+}
+p,h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+}
+footer{
+    background-color: var(--bg-container-primary);
+}
+
+.nav-brand  > p:nth-child(1){
+    color: var(--nav-font-primary);
+    font-weight: bold;
+}
+.nav-brand > p:nth-child(2){
+    color: var(--nav-font-secondary);
+    font-weight: 500;
+}
+
+.summary-section {
+    background-image: url('../images/bg-green.png');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    padding: 3rem 0;
+}
+.custom-card-time{
+    background-color: var(--custom-card-time);
+}
+.font-card-1{
+    font-size: 4rem;
+}
+.icon-contact > a{
+    margin-right: 5px;
+}
+.text-graph-section > p{
+    text-shadow: 2px 2px #ffebeb;
+}
