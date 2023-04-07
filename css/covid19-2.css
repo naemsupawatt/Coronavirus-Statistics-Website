@@ -48,3 +48,38 @@ footer{
 .text-graph-section > p{
     text-shadow: 2px 2px #ffebeb;
 }
+/* responsive for mobile */
+@media only screen and (max-width: 600px) {
+    /* For tablets: */
+    .card-body, .font-card-1 > p{
+        text-align: center;
+        
+    }
+    .custom-large-row, .custom-mini-row, .custom-graph-row, .custom-footer-row{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+    .custom-large-row > .col-5{
+        width: 80%;
+    }
+    .custom-large-row > .col-7{
+        width: 80%;
+        font-size: 2rem;
+        font-weight: 400;
+    }
+    .custom-mini-row > .col-4{
+        width: 80%;
+        margin-bottom: 1rem;
+    }
+    .summary-section > .container-fluid > .row > .col-7{
+        width: 80%;
+    }
+    .summary-section > .container-fluid > .row > .col-4{
+        width: 100%;
+    }
+    .custom-footer-row > .col-2{
+        width: 80%;
+    }
+}
