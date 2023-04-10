@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHUKET INTERNATIONAL HOSPITAL : โรงพยาบาลภูเก็ตอินเตอร์เนชั่นแนล</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/covid19-2.css">
+</head>
+
+<body>
+
+    <header>
+        <!-- <nav class="navbar bg-white py-2">
+                <div class="container-fluid">
+                    <div class="d-flex">
+                        <img class="my-auto me-2" src="/images/LOGO_v1.png" alt="" width="35px" height="35px">
+                        <div class="nav-brand">
+                            <p>PHUKET INTERNATIONAL HOSPITAL</p>
+                            <p>โรงพยาบาลภูเก็ตอินเตอร์เนชั่นแนล</p>
+                        </div>
+                    </div>
+                </div>
+            </nav> -->
+        <nav class="navbar bg-body-tertiary py-2">
+            <div class="container-fluid">
+                <div class="d-flex">
+                    <img class="my-auto me-2" src="/images/LOGO_v1.png" alt="" width="35px" height="35px">
+                    <div class="nav-brand">
+                        <p>PHUKET INTERNATIONAL HOSPITAL</p>
+                        <p>โรงพยาบาลภูเก็ตอินเตอร์เนชั่นแนล</p>
+                    </div>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">เมนู</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="./covid19.html">หน้าแรก</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./table_of_covid.html">ตารางแสดงสถานการณ์ COVID-19</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+    </header>
+    <main>
+        <section>
+            <!-- Date status right side -->
+            <div class="fs-2 text-center mt-3">
+                        <span>สถานการณ์ Covid-19 ประจำวันที่</span>
+                        <span id="update-api">20-03-2566</span>
+            </div>
+            <div class="graph-section pt-2">
+                <div class="container p-2">
+                    <div class="row custom-graph-row">
+                        <div class="col-12 d-flex justify-content-center align-items-center">
+                            <table class="table table-success table-striped" id="data-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Week</th>
+                                        <th scope="col">Year</th>
+                                        <th scope="col">New Csae</th>
+                                        <th scope="col">New Rocovered</th>
+                                        <th scope="col">New Death</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container-fluid">
+            <div class="row p-3 custom-footer-row">
+                <div class="col-10 d-flex justify-content-start align-items-center">
+                    <img src="/images/LOGO_footer.png" alt="">
+                    <div class="ms-2 text-light fw-medium">
+                        <p>PHUKET INTERNATIONAL HOSPITAL</p>
+                        <p>โรงพยาบาลภูเก็ตอินเตอร์เนชั่นแนล</p>
+                    </div>
+                </div>
+                <div class="col-2 d-flex flex-column justify-content-start align-items-center">
+                    <button class="btn border rounded-pill px-4 py-1 mb-2 text-light">ติดตามข่าวสารต่าง ๆ
+                        ได้ที่</button>
+                    <div class="icon-contact">
+                        <a href=""><img src="/images/twiter.png" alt=""></a>
+                        <a href=""><img src="/images/ig.png" alt=""></a>
+                        <a href=""><img src="/images/yt.png" alt=""></a>
+                        <a href=""><img src="/images/facebook.png" alt=""></a>
+                        <a href=""><img src="/images/tictokpng.png" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    axios.get('https://covid19.ddc.moph.go.th/api/Cases/timeline-cases-all')
+        .then(function (resp) {
+            const data = resp.data;
+            const tbodyElem = document.getElementById('data-table');
+
+            console.log(data);
+            for (let i = 1; i < data.length; i++) {
+                let html = `<tr>
+                                <td>${data[i].weeknum}</td>
+                                <td>${data[i].year}</td>
+                                <td class="fw-bold">${data[i].new_case.toLocaleString()}</td>
+                                <td>${data[i].total_case.toLocaleString()}</td>
+                                <td class="fw-bold">${data[i].new_death.toLocaleString()}</td>
+                            </tr>`
+                //<td>${data[i].weeknum}</td><td>${data[i].new_case.toLocaleString(undefined, {style: 'currency', currency: 'THB' , minimumFractionDigits: 2})}</td>
+                //tbodyElem.innerHTML = html;
+                tbodyElem.insertAdjacentHTML('beforeend', html);
+            }
+        })
+
+</script>
