@@ -53,12 +53,12 @@
                                                                 width="15px" height="18px">
                                                             <span class="fw-semibold">เพิ่มขึ้น</span>
                                                         </div>
-                                                        <h3>3,001</h3>
+                                                        <h3 id="new-case-api">3,001</h3>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-7 text-end my-auto font-card-1">
-                                                <p>4,463,557</p>
+                                                <p id="total-case-api">4,463,557</p>
                                             </div>
                                         </div>
                                     </div>
@@ -70,7 +70,7 @@
                                 <div class="card">
                                     <div class="card-body text-center">
                                         <p class="mb-2 fs-5 fw-semibold">กำลังรักษา</p>
-                                        <h3 class="mb-1">34,056</h3>
+                                        <h3 class="mb-1" id="recovered-api">34,056</h3>
                                         <div class="card bg-body-secondary border-0">
                                             <div
                                                 class="card-body d-flex justify-content-between align-items-center p-2">
@@ -79,7 +79,7 @@
                                                         height="18px">
                                                     <span>ลดลง</span>
                                                 </div>
-                                                <h5>842</h5>
+                                                <h5 id="prev-api">842</h5>
                                             </div>
                                         </div>
 
@@ -90,7 +90,7 @@
                                 <div class="card">
                                     <div class="card-body text-center">
                                         <p class="mb-2 fs-5 fw-semibold">ผู้ป่วยหายแล้ว</p>
-                                        <h3 class="mb-1">4,399,358</h3>
+                                        <h3 class="mb-1" id="total-recovered-api">4,399,358</h3>
                                         <div class="card bg-body-secondary border-0">
                                             <div
                                                 class="card-body d-flex justify-content-between align-items-center p-2">
@@ -99,7 +99,7 @@
                                                         width="15px" height="18px">
                                                     <span>เพิ่มขึ้น</span>
                                                 </div>
-                                                <h5>3,813</h5>
+                                                <h5 id="diff-api">3,813</h5>
                                             </div>
                                         </div>
 
@@ -110,7 +110,7 @@
                                 <div class="card">
                                     <div class="card-body text-center">
                                         <p class="mb-2 fs-5 fw-semibold">เสียชีวิต</p>
-                                        <h3 class="mb-1">30,143</h3>
+                                        <h3 class="mb-1" id="new-death">30,143</h3>
                                         <div class="card bg-body-secondary border-0">
                                             <div
                                                 class="card-body d-flex justify-content-between align-items-center p-2">
@@ -119,7 +119,7 @@
                                                         height="18px">
                                                     <span>เพิ่มขึ้น</span>
                                                 </div>
-                                                <h5>30</h5>
+                                                <h5 id="diff-death-c">30</h5>
                                             </div>
                                         </div>
 
@@ -133,7 +133,7 @@
                         <div class="card rounded-pill custom-card-time fs-5 text-light text-center fw-semibold ms-auto">
                             <div class="card-body">
                                 <span>สถานการณ์ Covid-19 ประจำวันที่</span>
-                                <span>20-03-2566</span>
+                                <span id="update-api">20-03-2566</span>
                             </div>
                         </div>
                     </div>
@@ -154,8 +154,8 @@
                             </div>
 
                         </div>
-                        <div class="offset-1 col-7 bg-danger">
-                            <p>b</p>
+                        <div class="offset-1 col-7">
+                            <canvas id="chart-api" class="custom-canvas"></canvas>
                         </div>
                     </div>
                 </div>
@@ -187,6 +187,136 @@
         </div>
     </footer>
 </body>
-
 </html>
 <script src="js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+<script>
+    const new_c = document.getElementById("new-case-api"); //new_case
+    const total_c = document.getElementById("total-case-api"); //total_case
+    const update_c = document.getElementById("update-api");//update_date
+    const chart_c = document.getElementById("chart-api");
+    const recovered_c = document.getElementById("recovered-api");
+    const prev_c = document.getElementById("prev-api");
+    const total_recovered_c = document.getElementById("total-recovered-api")
+    const diff_c = document.getElementById("diff-api");
+    const new_death_c = document.getElementById("new-death");
+    const diff_death_c = document.getElementById("diff-death-c");
+    /*function draw_mockup_chart() {
+        const chart_data = {
+            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL'], // axis x labels
+            datasets: [
+                {
+                    label: 'New case',
+                    data: [100, 10, 60, 40, 15, 32, 45],
+                    fill: true,
+                }, // first dataset
+                {
+                    label: 'New death',
+                    data: [20, 15, 0, 23, 7, 2, 0],
+                    fill: true,
+                } // second dataset
+            ]
+        }
+        const chart_config = {
+            type: 'line',
+            data: chart_data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Covid-19 Line Chart'
+                    }
+                }
+            },
+        }
+        const chartElem = new Chart(chart_c, chart_config)
+    }*/
+    function draw_covid_chart(covid_data) {
+        let weeknum_arr = [];
+        let new_case_arr = [];
+        let new_death_arr = [];
+        for(let i=1;i<covid_data.length;i++)
+        {
+            let last_weeknum_arr = covid_data[i]["weeknum"];
+            let last_new_case_arr = covid_data[i]["new_recovered"];
+            let last_new_death_arr = covid_data[i]["new_death"];
+            weeknum_arr.push(last_weeknum_arr);
+            new_case_arr.push(last_new_case_arr);
+            new_death_arr.push(last_new_death_arr);
+        }
+        console.log(weeknum_arr);
+        console.log(new_case_arr);
+        console.log(new_death_arr);
+
+        //[1, 2, 3, 4, 5]
+
+        const chart_data = {
+            labels: weeknum_arr, // axis x labels
+            datasets: [
+                {
+                    label: 'ผู้ป่วยหายแล้ว',
+                    data: new_case_arr,
+                    fill: true,
+                }, // first dataset
+                {
+                    label: 'ผู้ป่วยเสียชีวิต',
+                    data: new_death_arr,
+                    fill: true,
+                } // second dataset
+            ]
+        }
+        const chart_config = {
+            type: 'line',
+            data: chart_data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        
+                    },
+                    title: {
+                        display: true,
+                        text: 'กราฟเปรียบเทียบสถานการณ์ COVID-19'
+                    }
+                }
+            },
+        }
+        const chartElem = new Chart(chart_c, chart_config)
+    }
+    axios.get('https://covid19.ddc.moph.go.th/api/Cases/timeline-cases-all')
+        .then((response) => {
+            const last_data = response.data.slice(-1);
+            const covert_date = dayjs(last_data[0]["update_date"]).format('DD-MM-YYYY');
+            draw_covid_chart(response.data);
+            //draw_mockup_chart();
+            //convert date to dd-mm-yyyy
+            //const date = last_data[0]["update_date"].slice(0,10); // 2023-04-07
+            /*let dateSplit = date.split("-"); // ["2023", "04", "07"]
+            dateSplit = dateSplit.reverse(); // ["07", "04", "2023"]
+            const covert_date = dateSplit.join("-"); // '07/04/2023'*/
+        
+            //Post Data
+            new_c.innerText = last_data[0]["new_case"].toLocaleString();
+            total_c.innerText = last_data[0]["total_case"].toLocaleString();
+            update_c.innerHTML = covert_date;
+            recovered_c.innerText = last_data[0]["new_recovered"].toLocaleString();
+            prev_c.innerText = last_data[0]["case_new_prev"].toLocaleString();
+            total_recovered_c.innerText = last_data[0]["total_recovered"].toLocaleString();
+            diff_c.innerText = last_data[0]["case_new_diff"].toLocaleString();
+            new_death_c.innerText = last_data[0]["new_death"].toLocaleString();
+            diff_death_c.innerText = last_data[0]["death_new_diff"].toLocaleString();
+            
+        })
+        .catch((error) => {
+            console.error(error)
+        });
+</script>
+
+
